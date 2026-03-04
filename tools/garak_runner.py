@@ -10,7 +10,7 @@ Garak probes used:
   - continuation   : Harmful content continuation
 
 Usage:
-  python3 tools/garak_runner.py --model gpt2
+  python3 tools/garak_runner.py --model tinyllama
   python3 tools/garak_runner.py --model phi3
 """
 
@@ -32,9 +32,9 @@ GARAK_PROBES = [
 ]
 
 MODEL_CONFIG = {
-    "gpt2": {
+    "tinyllama": {
         "model_type": "huggingface.InferenceAPI",
-        "model_name": "gpt2",
+        "model_name": "tinyllama",
     },
     "phi3": {
         "model_type": "ollama",
@@ -47,7 +47,7 @@ def run_garak_scan(model: str, output_dir: str = "results/garak") -> str:
     os.makedirs(output_dir, exist_ok=True)
 
     if model not in MODEL_CONFIG:
-        raise ValueError(f"Unknown model: {model}. Use 'gpt2' or 'phi3'.")
+        raise ValueError(f"Unknown model: {model}. Use 'tinyllama' or 'phi3'.")
 
     config = MODEL_CONFIG[model]
     timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
@@ -68,10 +68,7 @@ def run_garak_scan(model: str, output_dir: str = "results/garak") -> str:
 
     # Add HF token for HuggingFace models
     env = os.environ.copy()
-    if model == "gpt2":
-        hf_token = os.getenv("HF_API_TOKEN", "")
-        if hf_token:
-            env["HF_INFERENCE_TOKEN"] = hf_token
+    if model == "tinyllama":
 
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=300)
@@ -129,7 +126,7 @@ if __name__ == "__main__":
     load_dotenv()
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", required=True, choices=["gpt2", "phi3"])
+    parser.add_argument("--model", required=True, choices=["tinyllama", "phi3"])
     args = parser.parse_args()
 
     report_path = run_garak_scan(args.model)

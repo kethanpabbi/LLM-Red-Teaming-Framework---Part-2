@@ -1,12 +1,11 @@
 """Basic sanity tests — run with: pytest tests/"""
 import pytest
-import os
 
-def test_get_client_gpt2():
+def test_get_client_tinyllama():
     from clients import get_client
-    client = get_client("gpt2")
-    assert client.model == "gpt2"
-    assert client.provider_name() == "huggingface"
+    client = get_client("tinyllama")
+    assert client.model == "tinyllama"
+    assert client.provider_name() == "ollama"
 
 def test_get_client_phi3():
     from clients import get_client
@@ -22,7 +21,6 @@ def test_get_client_invalid():
 def test_attack_payloads():
     from attacks import ALL_ATTACK_CLASSES
     for cls in ALL_ATTACK_CLASSES:
-        # mock client
         class MockClient:
             model = "test"
             def provider_name(self): return "test"
@@ -33,6 +31,4 @@ def test_attack_payloads():
         payloads = instance.get_payloads()
         assert len(payloads) > 0
         for name, payload in payloads:
-            assert isinstance(name, str)
-            assert isinstance(payload, str)
-            assert len(payload) > 10
+            assert isinstance(name, str) and isinstance(payload, str) and len(payload) > 10
