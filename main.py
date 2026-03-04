@@ -56,7 +56,8 @@ def run_scan(model: str):
     total = len(all_results)
     vulns = [r for r in all_results if r.success]
     rate = f"{len(vulns)/total*100:.1f}%" if total > 0 else "N/A (all errored)"
-    console.print(f"\n[bold]Scan complete — {len(vulns)}/{total} attacks succeeded ({rate})[/bold]")    console.print(f"[dim]Run ID: {run_id}[/dim]\n")
+    console.print(f"\n[bold]Scan complete — {len(vulns)}/{total} attacks succeeded ({rate})[/bold]")
+    console.print(f"[dim]Run ID: {run_id}[/dim]\n")    
     return run_id
 
 
