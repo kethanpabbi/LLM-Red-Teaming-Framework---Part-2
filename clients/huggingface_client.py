@@ -7,7 +7,7 @@ HF_API_URL = "https://api-inference.huggingface.co/models"
 class HuggingFaceClient(BaseLLMClient):
     """Client for HuggingFace Inference API — used for GPT-2 (no safety training)."""
 
-    def __init__(self, model: str = "gpt2"):
+    def __init__(self, model: str = "distilgpt2"):
         super().__init__(model)
         self.token = os.getenv("HF_API_TOKEN")
         self.headers = {"Authorization": f"Bearer {self.token}"}

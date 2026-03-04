@@ -3,7 +3,7 @@ from clients.base import BaseLLMClient
 def get_client(model: str) -> BaseLLMClient:
     if model == "gpt2":
         from clients.huggingface_client import HuggingFaceClient
-        return HuggingFaceClient(model="gpt2")
+        return HuggingFaceClient(model="distilgpt2")
     elif model == "phi3":
         from clients.ollama_client import OllamaClient
         return OllamaClient(model="phi3:mini")
