@@ -3,7 +3,7 @@
 LLM Red Team Framework — Part 2: Open Source Models
 
 Usage:
-  python3 main.py --model gpt2
+  python3 main.py --model tinyllama
   python3 main.py --model phi3
   python3 main.py --compare --run1 run_abc123 --run2 run_def456
 """
@@ -55,15 +55,15 @@ def run_scan(model: str):
 
     total = len(all_results)
     vulns = [r for r in all_results if r.success]
-    rate = f"{len(vulns)/total*100:.1f}%" if total > 0 else "N/A (all errored)"
-    console.print(f"\n[bold]Scan complete — {len(vulns)}/{total} attacks succeeded ({rate})[/bold]")
-    console.print(f"[dim]Run ID: {run_id}[/dim]\n")    
+    console.print(f"\n[bold]Scan complete — {len(vulns)}/{total} attacks succeeded ({len(vulns)/total*100:.1f}%)[/bold]")
+    console.print(f"[dim]Run ID: {run_id}[/dim]\n")
+
     return run_id
 
 
 def main():
     parser = argparse.ArgumentParser(description="LLM Red Team Framework Part 2")
-    parser.add_argument("--model", choices=["gpt2", "phi3"], help="Model to test")
+    parser.add_argument("--model", choices=["tinyllama", "phi3"], help="Model to test")
     parser.add_argument("--compare", action="store_true", help="Compare two existing runs")
     parser.add_argument("--run1", help="First run ID for comparison")
     parser.add_argument("--run2", help="Second run ID for comparison")
@@ -85,8 +85,7 @@ def main():
         compare_runs(args.run1, args.run2)
 
     elif args.model:
-        if args.model == "gpt2" and not os.getenv("HF_API_TOKEN"):
-            console.print("[red]Error: HF_API_TOKEN not set in .env[/red]")
+        if False  # tinyllama runs locally via Ollama:
             sys.exit(1)
         run_scan(args.model)
 
